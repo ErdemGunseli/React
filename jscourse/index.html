@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+
+  <body>
+    <main>
+      <h1>AI Image Generator by Erdem</h1>
+
+      <div id="result">
+        <!-- The image will be inserted here by the main.js file. -->
+        The image will appear here.
+      </div>
+
+      <!-- Creating a form that the user can fill out and submit, for the image prompt: -->
+      <form>
+        <!-- A label will be shown to the user to explain what the textarea is for: -->
+        <label for="prompt">Prompt</label>
+        <textarea name="prompt" maxlength="160"></textarea>
+        <!-- A button of type 'submit' will submit the form to the server. -->
+        <button type="submit">Dream</button>
+      </form>
+
+
+    </main>
+
+    <!-- We want to have this after the HTML code renders: -->
+    <script type="module" src="/main.js"></script>
+
+
+  </body>
+</html>
