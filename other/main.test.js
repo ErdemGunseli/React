@@ -1,5 +1,5 @@
 import {expect, test} from "vitest";
-// Function must be exported from the relevant file to be exported here:
+// Function must be exported from the relevant file to be imported here:
 import {cumulativeSum, iterativeBinarySearch, LRU} from "./algorithms.js";
 
 
