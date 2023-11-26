@@ -25,10 +25,9 @@ Inside the src folder, the following files are created:
 To run the app, navigate to the app directory and run the following command:
   npm start
 */
-import React, { useContext, useEffect } from 'react';
+import React, { useState, useEffect, createContext, useContext, useReducer, useRef, useMemo } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { useState, useReducer } from 'react';
 
 
 
@@ -56,11 +55,11 @@ const MyComponent2 = () => {
   The parent element here is a fragment: 
   */
   return (
-        <>
-          <h1>Title</h1>
-          <p>Paragraph</p>
-          <button>Click Me!</button>
-        </>);
+    <>
+      <h1>Title</h1>
+      <p>Paragraph</p>
+      <button>Click Me!</button>
+    </>);
 }
 
 /* Originally, React components were created using classes. This still works but is not recommended
@@ -361,7 +360,7 @@ every child component can have access to that data without needing props.
 
 The argument of the createContext function is the default value of the context.
 */
-const CountContext = React.createContext(0);
+const CountContext = createContext(0);
 
 function PropDrillingComponent() {
 
@@ -386,6 +385,10 @@ function Grandchild() {
 
   return <div>{count}</div>
 }
+
+/* The value of the context variable can be changed by using the 'useState' hook.
+const [count, setCount] = useContext(CountContext);
+
 
 
 /* An error boundary is a React component that catches JavaScript errors anywhere in its child component tree,
@@ -424,6 +427,215 @@ class ErrorBoundary extends React.Component {
     return this.props.children;
   }
 }
+
+/* 10 CORE REACT HOOKS IN-DEPTH EXPLANATION & EXAMPLES:
+
+EACH HOOK NEEDS TO BE IMPORTED BEFORE BEING USED:
+import { useState, useEffect, useContext, useReducer, useRef, useMemo, useMemo, 
+  useCallback, useImperativeHandle, useLayoutEffect, useDebugValue } from 'react';
+
+
+BASIC HOOKS:
+  1) useState:
+    Allows functional components to have state (similar to class-based components). 
+    Returns an array with 2 elements, the variable which stores the state, 
+    and a function that can be used to update the state (since the state is immutable).
+*/
+
+function StatefulComponent3() {
+  /* It is fine to declare the state as a constant since it is immutable, 
+  cannot be changed directly, only through the setter.
+  The argument of the hook is the initial value of the state.
+  Using destructuring allows the syntax to be very clean, 
+  allowing the variable and setter to be given custom identifiers in one line.  
+
+  So here, creating an attribute for the component with the initial value of 0:
+  */
+  const [count, setCount] = useState(0);
+
+  // If we do not need to update the state, we can omit the setter:
+  // const [someStaticState] = useState(0);
+
+  return (
+    <>
+      {/* This component is a button that, when clicked, increases the number displayed on it. */}
+      <button onClick={() => {setCount(count + 1);}}>{count}</button>
+
+      {/* Also returning the component for demonstrating the useEffect hook: */}
+      <LifecycleComponent2 count={count}/>
+    </>
+  );
+}
+
+
+
+/*
+  2) useEffect: allows functional components to have lifecycle methods.
+    Calls the input callback function when the variables in the input dependencies array change:
+      1. componentDidMount: If the array is empty, the callback function will only run after instantiation.
+      2. componentDidUpdate: If the array is not empty, the callback function will run after instantiation and after every update.
+      3. componentWillUnmount: If the callback function returns another function, the returned function will run when the component is unmounted.
+      4. If no array is provided, the callback function will run after instantiation and whenever any state variable changes.
+*/
+function LifecycleComponent2({ count }) {
+
+  useEffect(() => {
+    console.log("The component has just been initalised.")
+  },[])
+
+
+useEffect(() => {
+  console.log(`The component has just been updated. Count: ${count}`)
+
+  return () => {console.log("The component has just been removed from the Document Object Model")}
+}, [count]);
+
+
+return null;
+};
+
+
+
+/*
+  3) useContext: allows functional components to use context variables - variables that can be accessed by all child components.
+    The createContext function is used to create a context variable and set its default value.
+    The useContext hook is used to access the context variable, but the children components must be wrapped in 
+    Context.Provider tags with the context value specified.
+*/
+
+const CountContext2 = createContext(0);
+
+function ContextComponent() {
+  // Declaring the state for the context that we want to provide to the children:
+  const [count] = useState(0);
+
+  // Calling the child component within the provider and specifying the context value:
+  return (
+    <CountContext2.Provider value={count}>
+      <ContextComponentChild />
+    </CountContext2.Provider>
+  );
+}
+
+function ContextComponentChild() {
+  // Consuming the context value - this could be done even if this was a grandchild to the ContextComponent.
+  const count = useContext(CountContext2)
+
+  return (
+    <p>Count: {count}</p>
+  );
+}
+
+
+
+/*
+  4) useReducer: for managing more complex state logic. It is particularly useful when the next state depends on the current state. 
+  It requires an initial state and a reducer function (that should have state and action parameters) that changes the state depending on different actions, 
+  and returns the new state. These are passed to the hook as arguments, and the hook returns the state of the variable, 
+  and a dispatch function that is used to call the reducer function with different actions.
+*/
+
+function counterReducer(state, action) {
+  switch (action.type) {
+
+    case "INCREMENT":
+      // No need for break since we are returning a value:
+      return {count: state.count + 1};
+
+    case "DECREMENT":
+      return {count: state.count - 1};
+    
+
+  case "RESET":
+    return {count: 0};
+  
+    default:
+      throw new Error(`Unsupported action type: ${action.type}`)
+  }
+}
+
+function ReducerComponent() {
+  const [state, dispatch] = useReducer(counterReducer, {count: 0})
+
+  return (<div>
+    <p>Count: {state.count}</p>
+    <button onClick={() => dispatch({type: "INCREMENT"})} >Increment</button>
+    <button onClick={() => dispatch({type: "DECREMENT"})} >Decrement</button>
+    <button onClick={() => dispatch({type: "RESET"})} >Reset</button>
+  </div>)
+}
+
+
+/*
+  5) useRef: used for holding information that is not necessary for rendering, such as an element from the DOM or
+  Unlike the useState hook, the useRef hook does not cause a re-render when the value changes.
+*/
+
+function RefComponent() {
+  const buttonRef = useRef(null);
+
+  // The current property of the ref object is used to access the value of the ref:
+  function clickTheButton() {
+    buttonRef.current.click();
+  }
+
+  return (
+    <button ref={buttonRef}>Click Me!</button>
+  );
+}
+
+
+
+/*
+  6) useMemo: used for optimising expensive calculations by memorising the result of the calculation. 
+  It caches the result of a function and only re-computes that result when specific values change.
+  It takes the function that computes the value as well as an array of dependencies, returning a memorised value. 
+  The array of dependencies is similar to useEffect.
+*/
+
+function MemoComponent() {
+  const [inputNumber, setInputNumber] = useState(0);
+
+  function factorial(number) {
+    // This is the expensive calculation:
+    if (number < 0) return "undefined";
+    else if (number === 0) return 1;
+    return number * factorial(number - 1);
+  }
+
+  // The factorial function will only be re-computed when the inputNumber changes:
+  const memoisedFactorial = useMemo(() => factorial(inputNumber), [inputNumber]);
+
+  return (<div>
+    <p>The factorial of {inputNumber} is {memoisedFactorial}.</p>
+    <input type="number"  onChange={(event) => setInputNumber(event.target.value)} />
+  </div>);
+}
+
+
+
+/*
+  7) useCallback: whilst useMemo is good for caching the result of a function, we may need to cache the function itself.
+  When a function is defined inside of a component, a new function object is created every time the component is rendered.
+  Wrapping the function in useCallback will return a memoised version of the function that only changes if one of the 
+  dependencies has changed. It is particularly useful when passing callbacks to child components that require the same 
+  function in the same memory location instead of a new function object that is actually a copy.
+  It may seem that every function should use this hook, but the hook itself is expensive and should only be used when needed.
+*/
+
+function CallbackComponent() {
+  const [count, setCount] = useState(0);
+
+  // Without useCallback, this function would be re0created in every render
+
+}
+
+
+/*
+  8) useImperativeHandle:
+  9) useLayoutEffect:
+  10) useDebugValue:
+*/
 
 
 /* The contents of the 'App' function will be inserted within the 'root' div in the 'index.html' file. 
