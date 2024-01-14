@@ -33,7 +33,7 @@ form.addEventListener('submit', async (event) => {
     }),
   });
   
-  // response.ok is a boolean that indicates whether the response was successful (status in the range 200-299) or not:
+  // response.ok is a boolean that indicates whether the response was successful (status 2XX) or not:
 
   if (response.ok) {
   // The response from the server is a JSON string that contains the URL of the generated image:

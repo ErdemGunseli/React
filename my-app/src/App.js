@@ -31,8 +31,6 @@ import './App.css';
 
 
 
-
-
 /* Each React function (can be declarations or expressions) corresponds to a UI component.
 Components return JSX (JavaScript XML or JavaScript Syntax Extension) to describe the appearance of the UI.
 JSX looks like HTML (uses tags), and can include JavaScript expressions within curly braces.
@@ -202,7 +200,7 @@ function ListItem({ id, name }) {
 
 
 /* An event is a signal from the browser that an interaction has occurred, such as a mouse click or a key press.
-In vanilla Javascript, we would likely grab a component from the DOM (Document Object Model 
+In vanilla Javascript, we would likely grab a component from the DOM (Document Object Model) 
 a tree-like representation of the components within a web page) and add an event listener to it:
   const button = document.getElementById('button');
   button.addEventListener('click', (event) => console.log(event));
@@ -273,7 +271,7 @@ function StatefulComponent() {
 /* The 'useState' hook will override the previous state and replace it with the new one.
 If we want to merge the new state with the previous one, we could use the spread operator:
   const [state, setState] = useState({ count: 0, theme: 'blue' });
-  state = { ...state, count: state.count + 1 }; // count: 1, theme: 'blue'
+  setState( { ...state, count: state.count + 1 } ); // count: 1, theme: 'blue'
 
 This may be useful when we want to add an element to an array, or add a property to an object.
 
@@ -388,7 +386,7 @@ function Grandchild() {
 
 /* The value of the context variable can be changed by using the 'useState' hook.
 const [count, setCount] = useContext(CountContext);
-
+*/
 
 
 /* An error boundary is a React component that catches JavaScript errors anywhere in its child component tree,

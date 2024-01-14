@@ -94,7 +94,6 @@ function App() {
   // Used for win handling:
   useEffect(() => {
     const checkWin = cards.filter((card) => !card.matched);
-    console.log("TEEESSSTTT")
 
     if (cards.length && checkWin.length < 1) {
       setWins(wins + 1);
