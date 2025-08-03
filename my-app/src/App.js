@@ -429,7 +429,7 @@ class ErrorBoundary extends React.Component {
 /* 10 CORE REACT HOOKS IN-DEPTH EXPLANATION & EXAMPLES:
 
 EACH HOOK NEEDS TO BE IMPORTED BEFORE BEING USED:
-import { useState, useEffect, useContext, useReducer, useRef, useMemo, useMemo, 
+import { useState, useEffect, useContext, useReducer, useRef, useMemo, 
   useCallback, useImperativeHandle, useLayoutEffect, useDebugValue } from 'react';
 
 

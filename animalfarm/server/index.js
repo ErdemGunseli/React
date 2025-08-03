@@ -3,7 +3,7 @@ So after creating the server directory and index.js file, we need to use the com
 while inside the server directory, to create a package.json file.
 
 Run the command 'npm i express cors chance' to install these modules.
-    1) Express is like FastAPI, it's a web framework for Node.js.
+    1) Express is like FastAPI, it's a framework for building RESTful APIs.
     2) Cors (Cross-Origin Resource Sharing) is a middleware that allows us to make requests from our React app to our Express server.
     3) Chance is a library that allows us to generate random data, which we will use to demonstrate our app.
 

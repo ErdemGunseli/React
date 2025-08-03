@@ -18,7 +18,7 @@ function App() {
     /* localStorage allows us to store arbitrary key value pairs.
     When the page refreshes (i.e. when this component mounts),
     we are obtaining the last query and searching it, 
-    preventing the query from being when the page is refreshed.
+    preventing the query from being lost when the page is refreshed.
     */
     const lastQuery = localStorage.getItem('lastQuery');
     searchAnimals(lastQuery)
